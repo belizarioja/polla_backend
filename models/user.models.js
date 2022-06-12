@@ -4,6 +4,12 @@ const config = require("../config/general")
 const router = express.Router();
 const moment = require('moment')
 
+router.get(config.servidor + '/', function (req, res) {
+    res.json({
+        message: 'Conexion válida.',
+        status: 200
+    })
+});
 router.post(config.servidor + '/login', function (req, res) {
     const { usuario, clave } = req.body;
     const fe_ult_acceso = moment().format('YYYY-MM-DD HH:mm:ss')
