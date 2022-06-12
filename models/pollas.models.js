@@ -22,7 +22,7 @@ router.post(config.servidor + '/mostrarpollas', function (req, res) {
 router.post(config.servidor + '/mostrarresultados', function (req, res) {
     const { jornada } = req.body;
 
-    const sql = "select * from t_resultados where co_jornada = " + jornada + "  order by co_resultado asc"
+    const sql = "select * from t_resultados where co_jornada = " + jornada + "  order by nu_carrera asc"
     conexion.query(sql, [jornada], function (err, rows) {
         if (!err) {
             res.status(200).send(rows)
@@ -63,6 +63,86 @@ router.post(config.servidor + '/crearresultado', function (req, res) {
         } else {
             res.json({
                 message: "Error Creando Resultados : " + err,
+                status: 500
+            })
+        }
+
+    })
+});
+router.post(config.servidor + '/editarpolla', function (req, res) {
+    const { cojugada, carrera, resultado } = req.body;
+    const update = "update t_jugadas "
+    let set = ""
+    if (carrera === 1) {
+        set = " set nu_carrera1 = ? "
+    }
+    if (carrera === 2) {
+        set = " set nu_carrera2 = ? "
+    }
+    if (carrera === 3) {
+        set = " set nu_carrera3 = ? "
+    }
+    if (carrera === 4) {
+        set = " set nu_carrera4 = ? "
+    }
+    if (carrera === 5) {
+        set = " set nu_carrera5 = ? "
+    }
+    if (carrera === 6) {
+        set = " set nu_carrera6 = ? "
+    }
+    const where = " where co_jugada = ? "
+
+    conexion.query(update + set + where, [resultado, cojugada], function (err, rows) {
+        if (!err) {
+            res.status(200).send(rows)
+        } else {
+            res.json({
+                message: "Error Actualizando Resultados : " + err,
+                status: 500
+            })
+        }
+
+    })
+});
+router.post(config.servidor + '/editarresultado', function (req, res) {
+    const { coresultado, lugar, resultado } = req.body;
+    const update = "update t_resultados "
+    let set = ""
+    if (lugar === 1) {
+        set = " set nu_lugar1 = ? "
+    }
+    if (lugar === 2) {
+        set = " set nu_lugar2 = ? "
+    }
+    if (lugar === 3) {
+        set = " set nu_lugar3 = ? "
+    }
+    const where = " where co_resultado = ? "
+
+    conexion.query(update + set + where, [resultado, coresultado], function (err, rows) {
+        if (!err) {
+            res.status(200).send(rows)
+        } else {
+            res.json({
+                message: "Error Actualizando Resultados : " + err,
+                status: 500
+            })
+        }
+
+    })
+});
+router.post(config.servidor + '/eliminarresultado', function (req, res) {
+    const { coresultado } = req.body;
+    const sql = "delete from t_resultados "
+    const where = " where co_resultado = ? "
+
+    conexion.query(sql + where, [coresultado], function (err, rows) {
+        if (!err) {
+            res.status(200).send(rows)
+        } else {
+            res.json({
+                message: "Error Eliminando Resultados : " + err,
                 status: 500
             })
         }
