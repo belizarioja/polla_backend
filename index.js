@@ -21,10 +21,12 @@ app.use(express.urlencoded({ extended: true }));
 const usermodel = require("./models/user.models")
 const jornadamodel = require("./models/jornada.models")
 const pollasamodel = require("./models/pollas.models")
+const sedesamodel = require("./models/sedes.models")
 
 app.use(usermodel)
 app.use(jornadamodel)
 app.use(pollasamodel)
+app.use(sedesamodel)
 
 const PORT = process.env.PORT || 4006
 app.listen(PORT, () => {

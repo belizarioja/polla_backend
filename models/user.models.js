@@ -13,9 +13,9 @@ router.get(config.servidor + '/', function (req, res) {
 router.post(config.servidor + '/login', function (req, res) {
     const { usuario, clave } = req.body;
     const fe_ult_acceso = moment().format('YYYY-MM-DD HH:mm:ss')
-    const sql = "select a.co_usuario, a.tx_nombre, a.tx_usuario, a.tx_clave, a.co_rol, b.tx_rol, a.in_activa ";
-    const from = " from t_usuarios a, t_roles b ";
-    const where = " where a.co_rol = b.co_rol and a.tx_usuario = '" + usuario + "' and a.tx_clave = '" + clave + "'";
+    const sql = "select a.co_usuario, a.tx_nombre, a.tx_usuario, a.tx_clave, a.co_rol, b.tx_rol, a.in_activa, c.co_sede, c.tx_sede ";
+    const from = " from t_usuarios a, t_roles b , t_sedes c ";
+    const where = " where a.co_sede=c.co_sede and a.co_rol = b.co_rol and a.tx_usuario = '" + usuario + "' and a.tx_clave = '" + clave + "'";
     conexion.query(sql + from + where, function (err, rows) {
         if (!err) {
             res.status(200).send(rows)
