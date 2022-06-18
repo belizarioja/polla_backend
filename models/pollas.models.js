@@ -149,5 +149,22 @@ router.post(config.servidor + '/eliminarresultado', function (req, res) {
 
     })
 });
+router.post(config.servidor + '/eliminarjugada', function (req, res) {
+    const { co_jugada } = req.body;
+    const sql = "delete from t_jugadas "
+    const where = " where co_jugada = ? "
+
+    conexion.query(sql + where, [co_jugada], function (err, rows) {
+        if (!err) {
+            res.status(200).send(rows)
+        } else {
+            res.json({
+                message: "Error Eliminando Jugadas : " + err,
+                status: 500
+            })
+        }
+
+    })
+});
 
 module.exports = router;
